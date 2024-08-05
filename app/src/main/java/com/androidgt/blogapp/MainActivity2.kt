@@ -72,5 +72,6 @@ class MainActivity2 : AppCompatActivity() {
 data class Ciudad(
     val color: String = "",
     val population: Long = 0,
-    val pc: Int = 0
+    val pc: Int = 0,
+    val imageUrl: String = ""
 )

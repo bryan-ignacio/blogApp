@@ -5,11 +5,16 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
+import java.util.UUID
 
 // FireBase Tomar Fotos.
 class MainActivity : AppCompatActivity() {
@@ -52,12 +57,40 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         // compara los resultados.
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-
             val imageBitmap = data?.extras?.get("data") as Bitmap
-
             // le asignamos el bitmap al imageView.
             imageView.setImageBitmap(imageBitmap)
+            uploadPicture(imageBitmap)
+        }
+    }
 
+    //
+    private fun uploadPicture(bitmap: Bitmap) {
+        val storageRef = FirebaseStorage.getInstance().reference
+        val imagesRef = storageRef.child("${UUID.randomUUID()}.jpg")
+        // putFile: mandamos la uri de la imagen.lugar donde esta la imagen.
+        // putByte: sube una secuencia de Bytes a nuestro Storage.
+//        imagesRef.putBytes()
+        val baos = ByteArrayOutputStream()
+        // comprime la imagen.
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+        val uploadTask = imagesRef.putBytes(data)
+        // esperamos a que la tarea termine.
+        uploadTask.continueWithTask { task ->
+            if (!task.isSuccessful) {
+                task.exception?.let { exception ->
+                    throw exception
+                }
+            }
+            imagesRef.downloadUrl
+        }.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val downloadUrl = task.result.toString()
+                // mandamos un nuevo atributo al LA. entra al documento y actualiza y crea el campo imageUrl.
+                FirebaseFirestore.getInstance().collection("ciudades").document("LA").update(mapOf("imageUrl" to downloadUrl))
+                Log.d("Storage", "uploadPictureUrl: ${downloadUrl}")
+            }
         }
     }
 }
