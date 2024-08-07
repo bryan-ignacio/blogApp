@@ -5,46 +5,57 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.androidgt.blogapp.R
+import com.androidgt.blogapp.core.Resource
 import com.androidgt.blogapp.data.model.Post
+import com.androidgt.blogapp.data.remote.HomeScreenDataSource
 import com.androidgt.blogapp.databinding.FragmentHomeScreenBinding
+import com.androidgt.blogapp.domain.HomeScreenRepoImplements
+import com.androidgt.blogapp.presentation.HomeScreenViewModel
+import com.androidgt.blogapp.presentation.HomeScreenViewModelFactory
 import com.androidgt.blogapp.ui.home.adapter.HomeScreenAdapter
 import com.google.firebase.Timestamp
 
 class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
 
     private lateinit var binding: FragmentHomeScreenBinding
+    private val viewModel by viewModels<HomeScreenViewModel> {
+        HomeScreenViewModelFactory(
+            HomeScreenRepoImplements(
+                HomeScreenDataSource()
+            )
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding = FragmentHomeScreenBinding.bind(view)
 
-        val postList = listOf(
-            Post(
-                "https://process.filestackapi.com/cache=expiry:max/resize=width:320/mrFuqDcrT3mXeujn6eEN",
-                "Bryan Ignacio",
-                Timestamp.now(),
-                "https://pbs.twimg.com/media/EkSsEFkXgAIftCu.jpg"
-            ),
-            Post(
-                "https://process.filestackapi.com/cache=expiry:max/resize=width:320/mrFuqDcrT3mXeujn6eEN",
-                "Bryan Ignacio",
-                Timestamp.now(),
-                "https://pbs.twimg.com/media/EkSsEFkXgAIftCu.jpg"
-            ),
-            Post(
-                "https://process.filestackapi.com/cache=expiry:max/resize=width:320/mrFuqDcrT3mXeujn6eEN",
-                "Bryan Ignacio",
-                Timestamp.now(),
-                "https://pbs.twimg.com/media/EkSsEFkXgAIftCu.jpg"
-            ),
+        viewModel.fetchLatestPosts().observe(viewLifecycleOwner, Observer { result ->
+            when (result) {
+                is Resource.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
 
-            )
+                is Resource.Success -> {
+                    binding.progressBar.visibility = View.GONE
+                    binding.rvHome.adapter = HomeScreenAdapter(result.data)
+                }
 
-
-
-        binding.rvHome.adapter = HomeScreenAdapter(postList)
-
+                is Resource.Failure -> {
+                    binding.progressBar.visibility = View.GONE
+                    Toast.makeText(
+                        requireContext(),
+                        "Ocurrio un error: ${result.exception}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
     }
 
 }
