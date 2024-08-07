@@ -6,21 +6,44 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.androidgt.blogapp.R
+import com.androidgt.blogapp.data.model.Post
+import com.androidgt.blogapp.databinding.FragmentHomeScreenBinding
+import com.androidgt.blogapp.ui.home.adapter.HomeScreenAdapter
+import com.google.firebase.Timestamp
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeScreenFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
+
+    private lateinit var binding: FragmentHomeScreenBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentHomeScreenBinding.bind(view)
+
+        val postList = listOf(
+            Post(
+                "https://process.filestackapi.com/cache=expiry:max/resize=width:320/mrFuqDcrT3mXeujn6eEN",
+                "Bryan Ignacio",
+                Timestamp.now(),
+                "https://pbs.twimg.com/media/EkSsEFkXgAIftCu.jpg"
+            ),
+            Post(
+                "https://process.filestackapi.com/cache=expiry:max/resize=width:320/mrFuqDcrT3mXeujn6eEN",
+                "Bryan Ignacio",
+                Timestamp.now(),
+                "https://pbs.twimg.com/media/EkSsEFkXgAIftCu.jpg"
+            ),
+            Post(
+                "https://process.filestackapi.com/cache=expiry:max/resize=width:320/mrFuqDcrT3mXeujn6eEN",
+                "Bryan Ignacio",
+                Timestamp.now(),
+                "https://pbs.twimg.com/media/EkSsEFkXgAIftCu.jpg"
+            ),
+
+            )
+
+
+
+        binding.rvHome.adapter = HomeScreenAdapter(postList)
 
     }
 
