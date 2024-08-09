@@ -1,4 +1,4 @@
-package com.androidgt.blogapp.data.remote
+package com.androidgt.blogapp.data.remote.home
 
 import com.androidgt.blogapp.core.Resource
 import com.androidgt.blogapp.data.model.Post

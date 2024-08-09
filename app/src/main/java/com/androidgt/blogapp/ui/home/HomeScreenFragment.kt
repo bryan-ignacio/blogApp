@@ -2,22 +2,18 @@ package com.androidgt.blogapp.ui.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.androidgt.blogapp.R
 import com.androidgt.blogapp.core.Resource
-import com.androidgt.blogapp.data.model.Post
-import com.androidgt.blogapp.data.remote.HomeScreenDataSource
+import com.androidgt.blogapp.data.remote.home.HomeScreenDataSource
 import com.androidgt.blogapp.databinding.FragmentHomeScreenBinding
 import com.androidgt.blogapp.domain.HomeScreenRepoImplements
 import com.androidgt.blogapp.presentation.HomeScreenViewModel
 import com.androidgt.blogapp.presentation.HomeScreenViewModelFactory
 import com.androidgt.blogapp.ui.home.adapter.HomeScreenAdapter
-import com.google.firebase.Timestamp
 
 class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
 
