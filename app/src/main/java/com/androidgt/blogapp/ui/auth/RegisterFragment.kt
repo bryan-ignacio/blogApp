@@ -18,6 +18,7 @@ import com.androidgt.blogapp.databinding.FragmentRegisterBinding
 import com.androidgt.blogapp.domain.auth.AuthRepoImplements
 import com.androidgt.blogapp.presentation.auth.AuthViewModel
 import com.androidgt.blogapp.presentation.auth.AuthViewModelFactory
+import com.google.firebase.auth.FirebaseAuth
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
@@ -65,6 +66,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 }
 
                 is Result.Success -> {
+                    // obtener el id del usuario actual.
+//                    FirebaseAuth.getInstance().currentUser?.uid
                     binding.progressBar.visibility = View.GONE
                     findNavController().navigate(R.id.action_registerFragment_to_homeScreenFragment)
                 }
