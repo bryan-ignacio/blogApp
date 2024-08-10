@@ -1,9 +1,9 @@
 package com.androidgt.blogapp.domain
 
-import com.androidgt.blogapp.core.Resource
+import com.androidgt.blogapp.core.Result
 import com.androidgt.blogapp.data.model.Post
 
 interface HomeScreenRepo {
-    suspend fun getLatestPosts(): Resource<List<Post>>
+    suspend fun getLatestPosts(): Result<List<Post>>
 }
 

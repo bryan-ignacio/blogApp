@@ -3,18 +3,18 @@ package com.androidgt.blogapp.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
-import com.androidgt.blogapp.core.Resource
+import com.androidgt.blogapp.core.Result
 import com.androidgt.blogapp.domain.HomeScreenRepo
 import kotlinx.coroutines.Dispatchers
 
 class HomeScreenViewModel(private val repo: HomeScreenRepo) : ViewModel() {
 
     fun fetchLatestPosts() = liveData(Dispatchers.IO) {
-        emit(Resource.Loading())
+        emit(Result.Loading())
         try {
             emit(repo.getLatestPosts())
         } catch (e: Exception) {
-            emit(Resource.Failure(e))
+            emit(Result.Failure(e))
         }
     }
 }
