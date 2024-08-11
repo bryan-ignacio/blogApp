@@ -1,5 +1,6 @@
 package com.androidgt.blogapp.data.remote.auth
 
+import android.graphics.Bitmap
 import com.androidgt.blogapp.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -23,4 +24,6 @@ class AuthDataSource {
 
         return authResult.user
     }
+
+    suspend fun updateUserProfile(imageBitmap: Bitmap, username: String){}
 }
