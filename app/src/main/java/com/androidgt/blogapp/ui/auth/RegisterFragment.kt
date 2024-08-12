@@ -69,7 +69,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     // obtener el id del usuario actual.
 //                    FirebaseAuth.getInstance().currentUser?.uid
                     binding.progressBar.visibility = View.GONE
-                    findNavController().navigate(R.id.action_registerFragment_to_homeScreenFragment)
+                    findNavController().navigate(R.id.action_registerFragment_to_setupProfileFragment)
                 }
 
                 is Result.Failure -> {
